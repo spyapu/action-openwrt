@@ -123,6 +123,9 @@ jobs:
         run: |
           cd openwrt
           make defconfig
+          # Re-apply Chinese language settings after defconfig to prevent them being stripped
+          grep -q '^CONFIG_LUCI_LANG_zh_cn=y' .config || echo 'CONFIG_LUCI_LANG_zh_cn=y' >> .config
+          grep -q '^CONFIG_PACKAGE_luci-i18n-base-zh-cn=y' .config || echo 'CONFIG_PACKAGE_luci-i18n-base-zh-cn=y' >> .config
           make download -j8
           find dl -size -1024c -exec rm -f {} \;
 
